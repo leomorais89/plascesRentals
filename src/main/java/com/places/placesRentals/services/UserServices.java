@@ -26,7 +26,7 @@ public class UserServices {
 		return repo.insert(user);
 	}
 	
-	public void delete(String id) {
+	public void deleteById(String id) {
 		repo.deleteById(id);
 	}
 	

@@ -15,44 +15,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.places.placesRentals.documents.User;
-import com.places.placesRentals.services.UserServices;
+import com.places.placesRentals.documents.Place;
+import com.places.placesRentals.services.PlaceService;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserResource {
+@RequestMapping(value = "/places")
+public class PlaceResource {
 
 	@Autowired
-	private UserServices service;
+	private PlaceService service;
 	
 	@GetMapping
-	public ResponseEntity<List<User>> findAll(){
-		List<User> users = service.findAll();
-		return ResponseEntity.ok().body(users);
+	public ResponseEntity<List<Place>> findAll(){
+		List<Place> places = service.findAll();
+		return ResponseEntity.ok().body(places);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable String id){
-		User user = service.findById(id);
-		return ResponseEntity.ok().body(user);
+	public ResponseEntity<Place> findById(@PathVariable String id){
+		Place place = service.findById(id);
+		return ResponseEntity.ok().body(place);
 	}
 	
 	@PostMapping
-	public ResponseEntity<User> insert(@RequestBody User user){
-		user = service.insert(user);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-		return ResponseEntity.created(uri).body(user);
+	public ResponseEntity<Place> insert(@RequestBody Place place){
+		place = service.insert(place);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(place.getId()).toUri();
+		return ResponseEntity.created(uri).body(place);
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable String id){
+	public ResponseEntity<Void> deleteById(@PathVariable String id){
 		service.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<User> update(@PathVariable String id, @RequestBody User user){
-		user = service.update(id, user);
-		return ResponseEntity.ok().body(user);
+	public ResponseEntity<Place> update(@PathVariable String id, @RequestBody Place place) {
+		place = service.update(id, place);
+		return ResponseEntity.ok().body(place);
 	}
 }
