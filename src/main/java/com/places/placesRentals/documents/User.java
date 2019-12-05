@@ -2,9 +2,12 @@ package com.places.placesRentals.documents;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -26,6 +29,9 @@ public class User implements Serializable {
 	private String neighborhood;
 	private String user;
 	private String password;
+	
+	@DBRef(lazy = true)
+	private List<Reservation> reservations = new ArrayList<>();
 	
 	public User() {
 		
@@ -139,6 +145,10 @@ public class User implements Serializable {
 
 	public String getUser() {
 		return user;
+	}
+
+	public List<Reservation> getReservations() {
+		return reservations;
 	}
 
 	@Override

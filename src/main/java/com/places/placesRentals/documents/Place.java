@@ -1,8 +1,11 @@
 package com.places.placesRentals.documents;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -18,6 +21,9 @@ public class Place implements Serializable {
 	private String city;
 	private String neighborhook;
 	private Double price;
+	
+	@DBRef(lazy = true)
+	private List<Reservation> reservations = new ArrayList<>();
 	
 	public Place() {
 		
@@ -94,6 +100,10 @@ public class Place implements Serializable {
 
 	public String getId() {
 		return id;
+	}
+
+	public List<Reservation> getReservations() {
+		return reservations;
 	}
 
 	@Override
