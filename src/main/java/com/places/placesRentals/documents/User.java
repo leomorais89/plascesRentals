@@ -10,6 +10,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Document
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +33,7 @@ public class User implements Serializable {
 	private String password;
 	
 	@DBRef(lazy = true)
+	@JsonIgnore
 	private List<Reservation> reservations = new ArrayList<>();
 	
 	public User() {

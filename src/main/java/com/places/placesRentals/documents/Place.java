@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Document
 public class Place implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -23,6 +25,7 @@ public class Place implements Serializable {
 	private Double price;
 	
 	@DBRef(lazy = true)
+	@JsonIgnore
 	private List<Reservation> reservations = new ArrayList<>();
 	
 	public Place() {
