@@ -44,7 +44,9 @@ public class ConfigurationTest implements CommandLineRunner{
 		userRepository.saveAll(Arrays.asList(user1, user2, user3));
 		placeRepository.saveAll(Arrays.asList(place1, place2));
 		
-		Reservation reserv1 = new Reservation(null, Instant.parse("2020-02-08T08:38:00Z"), Instant.parse("2020-02-08T22:38:00Z"), 500.00, ReservationStatus.WAITING_PAYMENT, new ClientDTO(user1), new PlaceDTO(place1));
+		Reservation reserv1 = new Reservation(null, Instant.parse("2020-02-08T08:38:00Z"), Instant.parse("2020-02-08T22:38:00Z"), null, null, new ClientDTO(user1), new PlaceDTO(place1));
+		reserv1.setPrice(place1.getPrice());
+		reserv1.setStatus(ReservationStatus.WAITING_PAYMENT);
 		
 		reservationRepository.save(reserv1);
 		

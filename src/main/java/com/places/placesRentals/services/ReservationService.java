@@ -17,4 +17,23 @@ public class ReservationService {
 	public List<Reservation> findAll(){
 		return repo.findAll();
 	}
+	
+	public Reservation findById(String id) {
+		return repo.findById(id).get();
+	}
+	
+	public Reservation insert(Reservation reservation) {
+		return repo.insert(reservation);
+	}
+	
+	public void delete(String id) {
+		repo.deleteById(id);
+	}
+	
+	public Reservation update(String id, Reservation reservation) {
+		Reservation newReservation = findById(id);
+		newReservation.setStartDate(reservation.getStartDate());
+		newReservation.setEndDate(reservation.getEndDate());
+		return repo.save(newReservation);
+	}
 }
