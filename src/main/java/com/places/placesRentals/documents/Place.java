@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.places.placesRentals.dto.ImageDTO;
 
 @Document
 public class Place implements Serializable {
@@ -27,6 +28,7 @@ public class Place implements Serializable {
 	@DBRef(lazy = true)
 	@JsonIgnore
 	private List<Reservation> reservations = new ArrayList<>();
+	private List<ImageDTO> imagens = new ArrayList<>();
 	
 	public Place() {
 		
@@ -107,6 +109,10 @@ public class Place implements Serializable {
 
 	public List<Reservation> getReservations() {
 		return reservations;
+	}
+
+	public List<ImageDTO> getImagens() {
+		return imagens;
 	}
 
 	@Override

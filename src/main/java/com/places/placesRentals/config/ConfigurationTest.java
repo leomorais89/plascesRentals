@@ -12,6 +12,7 @@ import com.places.placesRentals.documents.Reservation;
 import com.places.placesRentals.documents.User;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
 import com.places.placesRentals.dto.ClientDTO;
+import com.places.placesRentals.dto.ImageDTO;
 import com.places.placesRentals.dto.PlaceDTO;
 import com.places.placesRentals.repositories.PlaceRepository;
 import com.places.placesRentals.repositories.ReservationRepository;
@@ -40,6 +41,13 @@ public class ConfigurationTest implements CommandLineRunner{
 		
 		Place place1 = new Place(null, "Fazenda do Sertão", "Uma fazendo muito linda em Rio das Flores", "Rua Santa Barbara, Nº 14", "Rio de Janeiro", "Rio das Flores", "Porto", 500.00);
 		Place place2 = new Place(null, "Fazenda dos Canarios", "Uma fazendo muito linda em Rio das Flores", "Rua Santa Barbara, Nº 80", "Rio de Janeiro", "Rio das Flores", "Tres Ilhas", 500.00);
+		
+		ImageDTO img1 = new ImageDTO("teste1");
+		ImageDTO img2 = new ImageDTO("teste2");
+		ImageDTO img3 = new ImageDTO("teste3");
+		
+		place1.getImagens().addAll(Arrays.asList(img1, img2));
+		place2.getImagens().add(img3);
 		
 		userRepository.saveAll(Arrays.asList(user1, user2, user3));
 		placeRepository.saveAll(Arrays.asList(place1, place2));
