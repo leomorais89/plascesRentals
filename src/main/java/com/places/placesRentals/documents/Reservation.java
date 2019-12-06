@@ -19,7 +19,7 @@ public class Reservation implements Serializable {
 	private Instant startDate;
 	private Instant endDate;
 	private Double price;
-	private ReservationStatus status;
+	private Integer status;
 	
 	private ClientDTO client;
 	private PlaceDTO place;
@@ -35,7 +35,7 @@ public class Reservation implements Serializable {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.price = price;
-		this.status = status;
+		setStatus(status);
 		this.client = client;
 		this.place = place;
 	}
@@ -65,11 +65,13 @@ public class Reservation implements Serializable {
 	}
 
 	public ReservationStatus getStatus() {
-		return status;
+		return ReservationStatus.valorDe(status);
 	}
 
 	public void setStatus(ReservationStatus status) {
-		this.status = status;
+		if(status != null) {
+			this.status = status.getCode();
+		}
 	}
 
 	public PlaceDTO getPlace() {
