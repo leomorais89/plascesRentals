@@ -6,8 +6,10 @@ import java.time.Instant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.places.placesRentals.documents.enuns.FormOfPayment;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
 import com.places.placesRentals.dto.ClientDTO;
+import com.places.placesRentals.dto.PaymentDTO;
 import com.places.placesRentals.dto.PlaceDTO;
 
 @Document
@@ -20,22 +22,25 @@ public class Reservation implements Serializable {
 	private Instant endDate;
 	private Double price;
 	private Integer status;
+	private Integer formOfPayment;
 	
 	private ClientDTO client;
 	private PlaceDTO place;
+	private PaymentDTO payment;
 	
 	public Reservation() {
 		
 	}
 
 	public Reservation(String id, Instant startDate, Instant endDate, Double price, ReservationStatus status,
-			ClientDTO client, PlaceDTO place) {
+			FormOfPayment formOfPayment, ClientDTO client, PlaceDTO place) {
 		super();
 		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.price = price;
 		setStatus(status);
+		setFormOfPayment(formOfPayment);
 		this.client = client;
 		this.place = place;
 	}
@@ -74,6 +79,16 @@ public class Reservation implements Serializable {
 		}
 	}
 
+	public FormOfPayment getFormOfPayment() {
+		return FormOfPayment.valorDe(formOfPayment);
+	}
+
+	public void setFormOfPayment(FormOfPayment formOfPayment) {
+		if(formOfPayment != null) {
+			this.formOfPayment = formOfPayment.getCode();
+		}
+	}
+
 	public PlaceDTO getPlace() {
 		return place;
 	}
@@ -88,6 +103,14 @@ public class Reservation implements Serializable {
 
 	public ClientDTO getClient() {
 		return client;
+	}
+
+	public PaymentDTO getPayment() {
+		return payment;
+	}
+
+	public void setPayment(PaymentDTO payment) {
+		this.payment = payment;
 	}
 
 	@Override
