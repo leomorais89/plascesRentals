@@ -1,11 +1,15 @@
 package com.places.placesRentals.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.places.placesRentals.documents.Reservation;
 import com.places.placesRentals.documents.User;
+import com.places.placesRentals.documents.enuns.ReservationStatus;
+import com.places.placesRentals.dto.ReservationDTO;
 import com.places.placesRentals.repositories.UserRepository;
 
 @Service
@@ -42,5 +46,39 @@ public class UserServices {
 		newUser.setCity(user.getCity());
 		newUser.setNeighborhood(user.getNeighborhood());
 		return repo.save(newUser);
+	}
+	
+	public void alterPassword(String id, String oldPassword, User user) {
+		User newUser = findById(id);
+		if(newUser.getPassword().equals(oldPassword)) {
+			newUser.setPassword(user.getPassword());
+			repo.save(newUser);
+		}
+	}
+	
+	public List<ReservationDTO> allReservationByClient(String id){
+		User client = findById(id);
+		List<Reservation> reservations = client.getReservations();
+		List<ReservationDTO> newReserv = new ArrayList<>();
+		for(Reservation reservation : reservations) {
+			newReserv.add(new ReservationDTO(reservation));
+		}
+		return newReserv;
+	}
+	
+	public List<ReservationDTO> reservationByClientAndStatus(String id, ReservationStatus status){
+		User client = findById(id);
+		List<Reservation> reservations = client.getReservations();
+		List<ReservationDTO> newReserv = new ArrayList<>();
+		for(Reservation reservation : reservations) {
+			if(reservation.getStatus().equals(status))
+				newReserv.add(new ReservationDTO(reservation));
+		}
+		return newReserv;
+	}
+	
+	public List<User> findByName(String name){
+		List<User> users = repo.findByNameContainingIgnoreCase(name);
+		return users;
 	}
 }

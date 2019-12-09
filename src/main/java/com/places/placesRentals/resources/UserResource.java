@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.places.placesRentals.documents.User;
+import com.places.placesRentals.documents.enuns.ReservationStatus;
+import com.places.placesRentals.dto.ReservationDTO;
 import com.places.placesRentals.services.UserServices;
 
 @RestController
@@ -54,5 +57,29 @@ public class UserResource {
 	public ResponseEntity<User> update(@PathVariable String id, @RequestBody User user){
 		user = service.update(id, user);
 		return ResponseEntity.ok().body(user);
+	}
+	
+	@PutMapping(value = "/{id}/alterPassword")
+	public ResponseEntity<Void> alterPassword(@PathVariable String id, @RequestParam(value = "oldPassword", defaultValue = "") String oldPassword, @RequestBody User user){
+		service.alterPassword(id, oldPassword, user);
+		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping(value = "/{id}/reservations")
+	public ResponseEntity<List<ReservationDTO>> allReservationByClient(@PathVariable String id){
+		List<ReservationDTO> reservations = service.allReservationByClient(id);
+		return ResponseEntity.ok().body(reservations);
+	}
+	
+	@GetMapping(value = "/{id}/reservationsStatus")
+	public ResponseEntity<List<ReservationDTO>> reservationByClientAndStatus(@PathVariable String id, @RequestParam(value = "status") ReservationStatus status){
+		List<ReservationDTO> reservations = service.reservationByClientAndStatus(id, status);
+		return ResponseEntity.ok().body(reservations);
+	}
+	
+	@GetMapping(value = "/seach")
+	public ResponseEntity<List<User>> findByName(@RequestParam(value = "name") String name){
+		List<User> users = service.findByName(name);
+		return ResponseEntity.ok().body(users);
 	}
 }
