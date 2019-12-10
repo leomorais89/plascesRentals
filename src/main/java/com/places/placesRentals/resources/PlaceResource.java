@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.places.placesRentals.documents.Place;
+import com.places.placesRentals.dto.ImageDTO;
 import com.places.placesRentals.services.PlaceService;
 
 @RestController
@@ -54,5 +56,35 @@ public class PlaceResource {
 	public ResponseEntity<Place> update(@PathVariable String id, @RequestBody Place place) {
 		place = service.update(id, place);
 		return ResponseEntity.ok().body(place);
+	}
+	
+	@PutMapping(value = "/{id}/alterPrice")
+	public ResponseEntity<Place> alterPrice(@PathVariable String id, @RequestBody Place place){
+		place = service.alterPrice(id, place);
+		return ResponseEntity.ok().body(place);
+	}
+	
+	@GetMapping(value = "/seach")
+	public ResponseEntity<List<Place>> findByName(@RequestParam(value = "name", defaultValue = "") String name){
+		List<Place> places = service.findByName(name);
+		return ResponseEntity.ok().body(places);
+	}
+	
+	@GetMapping(value = "/{id}/imagens")
+	public ResponseEntity<List<ImageDTO>> findByPlace(@PathVariable String id){
+		List<ImageDTO> imagens = service.findByPlace(id);
+		return ResponseEntity.ok().body(imagens);
+	}
+	
+	@PutMapping(value = "/{id}/addImagens")
+	public ResponseEntity<List<ImageDTO>> addImagens(@PathVariable String id, @RequestBody List<ImageDTO> imagens){
+		imagens = service.addImagens(id, imagens);
+		return ResponseEntity.ok().body(imagens);
+	}
+	
+	@DeleteMapping(value = "/{id}/delImagens")
+	public ResponseEntity<Void> delImagens(@PathVariable String id, @RequestBody List<ImageDTO> imagens){
+		service.delImagens(id, imagens);
+		return ResponseEntity.noContent().build();
 	}
 }

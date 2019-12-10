@@ -78,7 +78,7 @@ public class UserResource {
 	}
 	
 	@GetMapping(value = "/seach")
-	public ResponseEntity<List<User>> findByName(@RequestParam(value = "name") String name){
+	public ResponseEntity<List<User>> findByName(@RequestParam(value = "name", defaultValue = "") String name){
 		List<User> users = service.findByName(name);
 		return ResponseEntity.ok().body(users);
 	}
