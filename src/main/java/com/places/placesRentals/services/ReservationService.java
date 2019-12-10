@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.places.placesRentals.documents.Reservation;
+import com.places.placesRentals.documents.enuns.ReservationStatus;
 import com.places.placesRentals.repositories.ReservationRepository;
 
 @Service
@@ -35,5 +36,17 @@ public class ReservationService {
 		newReservation.setStartDate(reservation.getStartDate());
 		newReservation.setEndDate(reservation.getEndDate());
 		return repo.save(newReservation);
+	}
+	
+	public Reservation giveDiscount(String id, Double price) {
+		Reservation reservation = findById(id);
+		reservation.setPrice(price);
+		return repo.save(reservation);
+	}
+	
+	public Reservation cancelReservation(String id, ReservationStatus status) {
+		Reservation reservation = findById(id);
+		reservation.setStatus(status);
+		return repo.save(reservation);
 	}
 }

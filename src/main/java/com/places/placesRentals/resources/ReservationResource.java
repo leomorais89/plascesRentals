@@ -55,4 +55,16 @@ public class ReservationResource {
 		reservation = service.update(id, reservation);
 		return ResponseEntity.ok().body(reservation);
 	}
+	
+	@PutMapping(value = "/{id}/giveDiscount")
+	public ResponseEntity<Reservation> giveDiscount(@PathVariable String id, @RequestBody Reservation reservation){
+		reservation = service.giveDiscount(id, reservation.getPrice());
+		return ResponseEntity.ok().body(reservation);
+	}
+	
+	@PutMapping(value = "/{id}/cancelReservation")
+	public ResponseEntity<Reservation> cancelReservation(@PathVariable String id, @RequestBody Reservation reservation){
+		reservation = service.cancelReservation(id, reservation.getStatus());
+		return ResponseEntity.ok().body(reservation);
+	}
 }
