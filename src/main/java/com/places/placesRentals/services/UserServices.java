@@ -2,6 +2,7 @@ package com.places.placesRentals.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,10 +10,9 @@ import org.springframework.stereotype.Service;
 import com.places.placesRentals.documents.Reservation;
 import com.places.placesRentals.documents.User;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
-import com.places.placesRentals.dto.ClientDTO;
-import com.places.placesRentals.dto.PlaceDTO;
 import com.places.placesRentals.dto.ReservationDTO;
 import com.places.placesRentals.repositories.UserRepository;
+import com.places.placesRentals.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserServices {
@@ -25,7 +25,11 @@ public class UserServices {
 	}
 	
 	public User findById(String id) {
-		return repo.findById(id).get();
+		try {
+			return repo.findById(id).get();
+		} catch(NoSuchElementException e) {
+			throw new ResourceNotFoundException(e.getMessage());
+		}
 	}
 	
 	public User insert(User user) {

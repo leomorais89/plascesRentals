@@ -1,21 +1,22 @@
 package com.places.placesRentals.resources.exceptions;
 
 import java.io.Serializable;
+import java.time.Instant;
 
-public class StandardException implements Serializable {
+public class StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private String timestamp;
-	private String status;
+	private Instant timestamp;
+	private Integer status;
 	private String erro;
 	private String message;
 	private String path;
 	
-	public StandardException() {
+	public StandardError() {
 		
 	}
 
-	public StandardException(String timestamp, String status, String erro, String message, String path) {
+	public StandardError(Instant timestamp, Integer status, String erro, String message, String path) {
 		super();
 		this.timestamp = timestamp;
 		this.status = status;
@@ -24,19 +25,19 @@ public class StandardException implements Serializable {
 		this.path = path;
 	}
 
-	public String getTimestamp() {
+	public Instant getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(Instant timestamp) {
 		this.timestamp = timestamp;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
