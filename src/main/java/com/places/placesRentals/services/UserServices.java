@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.places.placesRentals.documents.Reservation;
 import com.places.placesRentals.documents.User;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
+import com.places.placesRentals.dto.ClientDTO;
+import com.places.placesRentals.dto.PlaceDTO;
 import com.places.placesRentals.dto.ReservationDTO;
 import com.places.placesRentals.repositories.UserRepository;
 

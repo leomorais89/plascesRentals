@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -66,5 +67,17 @@ public class ReservationResource {
 	public ResponseEntity<Reservation> cancelReservation(@PathVariable String id, @RequestBody Reservation reservation){
 		reservation = service.cancelReservation(id, reservation.getStatus());
 		return ResponseEntity.ok().body(reservation);
+	}
+	
+	@PutMapping(value = "/{id}/toPay")
+	public ResponseEntity<Void> toPay(@PathVariable String id){
+		service.toPay(id);
+		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping(value = "/findByStatus")
+	public ResponseEntity<List<Reservation>> findByStatus(@RequestParam(value = "status") String status){
+		List<Reservation> reservations = service.findByStatus(status);
+		return ResponseEntity.ok().body(reservations);
 	}
 }

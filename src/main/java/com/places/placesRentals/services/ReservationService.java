@@ -1,5 +1,6 @@
 package com.places.placesRentals.services;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.places.placesRentals.documents.Reservation;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
+import com.places.placesRentals.dto.PaymentDTO;
 import com.places.placesRentals.repositories.ReservationRepository;
 
 @Service
@@ -48,5 +50,17 @@ public class ReservationService {
 		Reservation reservation = findById(id);
 		reservation.setStatus(status);
 		return repo.save(reservation);
+	}
+	
+	public void toPay(String id) {
+		Reservation reservation = findById(id);
+		reservation.setPayment(new PaymentDTO(Instant.now()));
+		reservation.setStatus(ReservationStatus.PAID);
+		repo.save(reservation);
+	}
+	
+	public List<Reservation> findByStatus(String status){
+		Integer intStatus = Integer.parseInt(status);
+		return repo.findByStatus(intStatus);
 	}
 }
