@@ -2,8 +2,11 @@ package com.places.placesRentals.services;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.places.placesRentals.documents.Reservation;
@@ -11,6 +14,7 @@ import com.places.placesRentals.documents.enuns.ReservationStatus;
 import com.places.placesRentals.dto.PaymentDTO;
 import com.places.placesRentals.repositories.ReservationRepository;
 
+@EnableScheduling
 @Service
 public class ReservationService {
 
@@ -62,5 +66,15 @@ public class ReservationService {
 	public List<Reservation> findByStatus(String status){
 		Integer intStatus = Integer.parseInt(status);
 		return repo.findByStatus(intStatus);
+	}
+	
+	@Scheduled(cron = "0 0 0 * * *", zone = "America/Sao_Paulo")
+	public void setSpent() {
+		List<Reservation> reservations = findByStatus("2");
+		reservations = reservations.stream().filter(endDate -> endDate.getEndDate().isBefore(Instant.now())).collect(Collectors.toList());
+		for(Reservation reservation : reservations) {
+			reservation.setStatus(ReservationStatus.SPENT);
+		}
+		repo.saveAll(reservations);
 	}
 }

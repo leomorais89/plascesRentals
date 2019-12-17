@@ -137,4 +137,11 @@ public class Reservation implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Reservation [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + ", price=" + price
+				+ ", status=" + status + ", formOfPayment=" + formOfPayment + ", client=" + client + ", place=" + place
+				+ ", payment=" + payment + "]";
+	}
 }

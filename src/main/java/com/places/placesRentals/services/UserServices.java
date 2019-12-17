@@ -12,6 +12,7 @@ import com.places.placesRentals.documents.User;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
 import com.places.placesRentals.dto.ReservationDTO;
 import com.places.placesRentals.repositories.UserRepository;
+import com.places.placesRentals.services.exceptions.ResourceBadRequestException;
 import com.places.placesRentals.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -33,10 +34,19 @@ public class UserServices {
 	}
 	
 	public User insert(User user) {
-		return repo.insert(user);
+		try {
+			if(user.getUser().isEmpty()){}
+			return repo.insert(user);
+		} catch(NullPointerException e) {
+			throw new ResourceBadRequestException("Provavelmente usuário está nullo");
+		}
 	}
 	
 	public void deleteById(String id) {
+		User user = findById(id);
+		Long cont = user.getReservations().stream().filter(status -> status.getStatus().equals(ReservationStatus.WAITING_PAYMENT)).count();
+		if(cont > 0)
+			throw new ResourceBadRequestException("Usuário contem Reservas em aberto");
 		repo.deleteById(id);
 	}
 	

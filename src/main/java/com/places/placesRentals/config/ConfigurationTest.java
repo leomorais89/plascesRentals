@@ -57,7 +57,7 @@ public class ConfigurationTest implements CommandLineRunner{
 		Reservation reserv1 = new Reservation(null, Instant.parse("2020-02-08T08:38:00Z"), Instant.parse("2020-02-08T22:38:00Z"), null, null, FormOfPayment.BANK_SLIP, new ClientDTO(user1), new PlaceDTO(place1));
 		reserv1.setPrice(place1.getPrice());
 		reserv1.setStatus(ReservationStatus.WAITING_PAYMENT);
-		Reservation reserv2 = new Reservation(null, Instant.parse("2020-02-10T08:38:00Z"), Instant.parse("2020-02-10T22:38:00Z"), null, null, FormOfPayment.CARD,  new ClientDTO(user2), new PlaceDTO(place2));
+		Reservation reserv2 = new Reservation(null, Instant.parse("2020-02-10T08:38:00Z"), Instant.parse("2019-12-14T22:38:00Z"), null, null, FormOfPayment.CARD,  new ClientDTO(user2), new PlaceDTO(place2));
 		reserv2.setPrice(place2.getPrice());
 		PaymentDTO payment1 = new PaymentDTO(Instant.parse("2020-02-06T10:38:00Z"));
 		reserv2.setPayment(payment1);

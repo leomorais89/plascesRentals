@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.places.placesRentals.services.exceptions.ResourceBadRequestException;
 import com.places.placesRentals.services.exceptions.ResourceNotFoundException;
 
 @ControllerAdvice
@@ -18,6 +19,13 @@ public class CustomExceptionHandler {
 	public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest r){
 		HttpStatus status = HttpStatus.NOT_FOUND;
 		StandardError error = new StandardError(Instant.now(), status.value(), "Recurso não encontrado", e.getMessage(), r.getRequestURI());
+		return ResponseEntity.status(status).body(error);
+	}
+	
+	@ExceptionHandler(ResourceBadRequestException.class)
+	public ResponseEntity<StandardError> resourceBadRequest(ResourceBadRequestException e, HttpServletRequest r){
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError error = new StandardError(Instant.now(), status.value(), "Error", e.getMessage(), r.getRequestURI());
 		return ResponseEntity.status(status).body(error);
 	}
 }
