@@ -66,10 +66,12 @@ public class ConfigurationTest implements CommandLineRunner{
 		reservationRepository.saveAll(Arrays.asList(reserv1, reserv2));
 		
 		user1.getReservations().add(reserv1);
+		user2.getReservations().add(reserv2);
 		
 		userRepository.saveAll(Arrays.asList(user1, user2, user3));
 		
 		place1.getReservations().add(reserv1);
+		place2.getReservations().add(reserv2);
 		
 		placeRepository.saveAll(Arrays.asList(place1, place2));
 	}

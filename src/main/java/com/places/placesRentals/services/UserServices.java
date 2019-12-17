@@ -34,17 +34,19 @@ public class UserServices {
 	}
 	
 	public User insert(User user) {
-		try {
-			if(user.getUser().isEmpty()){}
+		boolean test = testUser(user);
+		if(test == true) {
 			return repo.insert(user);
-		} catch(NullPointerException e) {
-			throw new ResourceBadRequestException("Provavelmente usuário está nullo");
+		} else {
+			throw new ResourceBadRequestException("Usuário não foi salvo, existe algum campo obrigatório do Usuário em branco!!!");
 		}
 	}
 	
 	public void deleteById(String id) {
 		User user = findById(id);
-		Long cont = user.getReservations().stream().filter(status -> status.getStatus().equals(ReservationStatus.WAITING_PAYMENT)).count();
+		Long cont = 0L;
+		cont = user.getReservations().stream().filter(status -> status.getStatus().equals(ReservationStatus.WAITING_PAYMENT)).count();
+		cont += user.getReservations().stream().filter(status -> status.getStatus().equals(ReservationStatus.PAID)).count();
 		if(cont > 0)
 			throw new ResourceBadRequestException("Usuário contem Reservas em aberto");
 		repo.deleteById(id);
@@ -52,23 +54,32 @@ public class UserServices {
 	
 	public User update(String id, User user) {
 		User newUser = findById(id);
-		newUser.setName(user.getName());
-		newUser.setBirthDate(user.getBirthDate());
-		newUser.setTelephone(user.getTelephone());
-		newUser.setCellphone(user.getCellphone());
-		newUser.setEmail(user.getEmail());
-		newUser.setAddress(user.getAddress());
-		newUser.setState(user.getState());
-		newUser.setCity(user.getCity());
-		newUser.setNeighborhood(user.getNeighborhood());
-		return repo.save(newUser);
+		boolean test = testUser(user);
+		if(test == true) {
+			newUser.setName(user.getName());
+			newUser.setBirthDate(user.getBirthDate());
+			newUser.setTelephone(user.getTelephone());
+			newUser.setCellphone(user.getCellphone());
+			newUser.setEmail(user.getEmail());
+			newUser.setAddress(user.getAddress());
+			newUser.setState(user.getState());
+			newUser.setCity(user.getCity());
+			newUser.setNeighborhood(user.getNeighborhood());
+			return repo.save(newUser);
+		} else {
+			throw new ResourceBadRequestException("Usuário não foi atualizado, existe algum campo obrigatório do Usuário em branco!!!");
+		}
 	}
 	
 	public void alterPassword(String id, String oldPassword, User user) {
 		User newUser = findById(id);
 		if(newUser.getPassword().equals(oldPassword)) {
-			newUser.setPassword(user.getPassword());
-			repo.save(newUser);
+			if(!user.getPassword().isEmpty()) {
+				newUser.setPassword(user.getPassword());
+				repo.save(newUser);
+			} else {
+				throw new ResourceBadRequestException("Nova senha está nula!!!");
+			}
 		}
 	}
 	
@@ -96,5 +107,27 @@ public class UserServices {
 	public List<User> findByName(String name){
 		List<User> users = repo.findByNameContainingIgnoreCase(name);
 		return users;
+	}
+	
+	private Boolean testUser(User user) {
+		if(user.getName().isEmpty())
+			return false;
+		if(user.getBirthDate().equals(null))
+			return false;
+		if(user.getCpf().isEmpty())
+			return false;
+		if(user.getAddress().isEmpty())
+			return false;
+		if(user.getState().isEmpty())
+			return false;
+		if(user.getCity().isEmpty())
+			return false;
+		if(user.getNeighborhood().isEmpty())
+			return false;
+		if(user.getUser().isEmpty())
+			return false;
+		if(user.getPassword().isEmpty())
+			return false;
+		return true;
 	}
 }
