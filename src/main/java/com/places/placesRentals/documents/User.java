@@ -31,6 +31,7 @@ public class User implements Serializable {
 	private String neighborhood;
 	private String user;
 	private String password;
+	private String type;
 	
 	@DBRef(lazy = true)
 	@JsonIgnore
@@ -41,7 +42,7 @@ public class User implements Serializable {
 	}
 
 	public User(String id, String name, Instant birthDate, String cpf, String telephone, String cellphone, String email,
-			String address, String state, String city, String neighborhood, String user, String password) {
+			String address, String state, String city, String neighborhood, String user, String password, String type) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -56,6 +57,7 @@ public class User implements Serializable {
 		this.neighborhood = neighborhood;
 		this.user = user;
 		this.password = password;
+		this.type = type;
 	}
 
 	public String getName() {
@@ -148,6 +150,14 @@ public class User implements Serializable {
 
 	public String getUser() {
 		return user;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public List<Reservation> getReservations() {

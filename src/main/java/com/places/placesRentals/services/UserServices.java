@@ -63,6 +63,7 @@ public class UserServices {
 			newUser.setState(user.getState());
 			newUser.setCity(user.getCity());
 			newUser.setNeighborhood(user.getNeighborhood());
+			newUser.setType(user.getType());
 			return repo.save(newUser);
 		} else {
 			throw new ResourceBadRequestException("Usuário não foi atualizado, existe algum campo obrigatório do Usuário em branco!!!");
@@ -125,6 +126,8 @@ public class UserServices {
 		if(user.getUser().isEmpty())
 			return false;
 		if(user.getPassword().isEmpty())
+			return false;
+		if(user.getType().isEmpty())
 			return false;
 		return true;
 	}
