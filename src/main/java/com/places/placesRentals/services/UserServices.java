@@ -34,8 +34,7 @@ public class UserServices {
 	}
 	
 	public User insert(User user) {
-		boolean test = testUser(user);
-		if(test == true) {
+		if(testUser(user)) {
 			return repo.insert(user);
 		} else {
 			throw new ResourceBadRequestException("Usuário não foi salvo, existe algum campo obrigatório do Usuário em branco!!!");
@@ -54,8 +53,7 @@ public class UserServices {
 	
 	public User update(String id, User user) {
 		User newUser = findById(id);
-		boolean test = testUser(user);
-		if(test == true) {
+		if(testUser(user)) {
 			newUser.setName(user.getName());
 			newUser.setBirthDate(user.getBirthDate());
 			newUser.setTelephone(user.getTelephone());

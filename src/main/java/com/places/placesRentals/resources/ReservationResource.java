@@ -64,8 +64,8 @@ public class ReservationResource {
 	}
 	
 	@PutMapping(value = "/{id}/cancelReservation")
-	public ResponseEntity<Reservation> cancelReservation(@PathVariable String id, @RequestBody Reservation reservation){
-		reservation = service.cancelReservation(id, reservation.getStatus());
+	public ResponseEntity<Reservation> cancelReservation(@PathVariable String id){
+		Reservation reservation = service.cancelReservation(id);
 		return ResponseEntity.ok().body(reservation);
 	}
 	

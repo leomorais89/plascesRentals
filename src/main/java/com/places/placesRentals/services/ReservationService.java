@@ -2,6 +2,7 @@ package com.places.placesRentals.services;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import com.places.placesRentals.documents.Reservation;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
 import com.places.placesRentals.dto.PaymentDTO;
 import com.places.placesRentals.repositories.ReservationRepository;
+import com.places.placesRentals.services.exceptions.ResourceBadRequestException;
+import com.places.placesRentals.services.exceptions.ResourceNotFoundException;
 
 @EnableScheduling
 @Service
@@ -26,11 +29,19 @@ public class ReservationService {
 	}
 	
 	public Reservation findById(String id) {
-		return repo.findById(id).get();
+		try {
+			return repo.findById(id).get();
+		} catch(NoSuchElementException e) {
+			throw new ResourceNotFoundException(e.getMessage());
+		}
 	}
 	
 	public Reservation insert(Reservation reservation) {
-		return repo.insert(reservation);
+		if(testReservation(reservation)) {
+			return repo.insert(reservation);
+		} else {
+			throw new ResourceBadRequestException("Não foi realizado a reserva, algum preenchimento dos campos de forma errada");
+		}
 	}
 	
 	public void delete(String id) {
@@ -39,20 +50,28 @@ public class ReservationService {
 	
 	public Reservation update(String id, Reservation reservation) {
 		Reservation newReservation = findById(id);
-		newReservation.setStartDate(reservation.getStartDate());
-		newReservation.setEndDate(reservation.getEndDate());
-		return repo.save(newReservation);
+		if(testReservation(reservation)) {
+			newReservation.setStartDate(reservation.getStartDate());
+			newReservation.setEndDate(reservation.getEndDate());
+			return repo.save(newReservation);
+		} else {
+			throw new ResourceBadRequestException("Não foi realizado a atualização na reserva, algum preenchimento dos campos de forma errada");
+		}
 	}
 	
 	public Reservation giveDiscount(String id, Double price) {
 		Reservation reservation = findById(id);
-		reservation.setPrice(price);
-		return repo.save(reservation);
+		if(!price.equals(null)) {
+			reservation.setPrice(price);
+			return repo.save(reservation);
+		} else {
+			throw new ResourceBadRequestException("Preço não pode ser nulo");
+		}
 	}
 	
-	public Reservation cancelReservation(String id, ReservationStatus status) {
+	public Reservation cancelReservation(String id) {
 		Reservation reservation = findById(id);
-		reservation.setStatus(status);
+		reservation.setStatus(ReservationStatus.CANCELED);
 		return repo.save(reservation);
 	}
 	
@@ -64,8 +83,12 @@ public class ReservationService {
 	}
 	
 	public List<Reservation> findByStatus(String status){
-		Integer intStatus = Integer.parseInt(status);
-		return repo.findByStatus(intStatus);
+		if(!status.isEmpty()) {
+			Integer intStatus = Integer.parseInt(status);
+			return repo.findByStatus(intStatus);
+		} else {
+			throw new ResourceBadRequestException("Status não pode ser nulo");
+		}
 	}
 	
 	@Scheduled(cron = "0 0 0 * * *", zone = "America/Sao_Paulo")
@@ -76,5 +99,23 @@ public class ReservationService {
 			reservation.setStatus(ReservationStatus.SPENT);
 		}
 		repo.saveAll(reservations);
+	}
+	
+	public Boolean testReservation(Reservation reservation) {
+		if(reservation.getStartDate().equals(null))
+			return false;
+		if(reservation.getEndDate().equals(null))
+			return false;
+		if(reservation.getStartDate().isBefore(Instant.now()))
+			return false;
+		if(reservation.getEndDate().isBefore(reservation.getStartDate()))
+			return false;
+		if(reservation.getPrice().equals(null))
+			return false;
+		if(reservation.getStatus().equals(null))
+			return false;
+		if(reservation.getFormOfPayment().equals(null))
+			return false;
+		return true;
 	}
 }
