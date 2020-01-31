@@ -38,6 +38,9 @@ public class ReservationService {
 	
 	public Reservation insert(Reservation reservation) {
 		if(testReservation(reservation)) {
+			reservation.setPrice(reservation.getPlace().getPrice());
+			reservation.setDiscount(0.0);
+			reservation.setStatus(ReservationStatus.WAITING_PAYMENT);
 			return repo.insert(reservation);
 		} else {
 			throw new ResourceBadRequestException("Não foi realizado a reserva, algum preenchimento dos campos de forma errada");
@@ -59,10 +62,10 @@ public class ReservationService {
 		}
 	}
 	
-	public Reservation giveDiscount(String id, Double price) {
+	public Reservation giveDiscount(String id, Double discount) {
 		Reservation reservation = findById(id);
-		if(!price.equals(null)) {
-			reservation.setPrice(price);
+		if(!discount.equals(null)) {
+			reservation.setDiscount(discount);
 			return repo.save(reservation);
 		} else {
 			throw new ResourceBadRequestException("Preço não pode ser nulo");
@@ -109,12 +112,6 @@ public class ReservationService {
 		if(reservation.getStartDate().isBefore(Instant.now()))
 			return false;
 		if(reservation.getEndDate().isBefore(reservation.getStartDate()))
-			return false;
-		if(reservation.getPrice().equals(null))
-			return false;
-		if(reservation.getStatus().equals(null))
-			return false;
-		if(reservation.getFormOfPayment().equals(null))
 			return false;
 		return true;
 	}

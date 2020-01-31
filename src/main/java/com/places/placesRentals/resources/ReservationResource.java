@@ -59,7 +59,7 @@ public class ReservationResource {
 	
 	@PutMapping(value = "/{id}/giveDiscount")
 	public ResponseEntity<Reservation> giveDiscount(@PathVariable String id, @RequestBody Reservation reservation){
-		reservation = service.giveDiscount(id, reservation.getPrice());
+		reservation = service.giveDiscount(id, reservation.getDiscount());
 		return ResponseEntity.ok().body(reservation);
 	}
 	

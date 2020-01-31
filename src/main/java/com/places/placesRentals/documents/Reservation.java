@@ -6,7 +6,6 @@ import java.time.Instant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.places.placesRentals.documents.enuns.FormOfPayment;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
 import com.places.placesRentals.dto.ClientDTO;
 import com.places.placesRentals.dto.PaymentDTO;
@@ -21,8 +20,8 @@ public class Reservation implements Serializable {
 	private Instant startDate;
 	private Instant endDate;
 	private Double price;
+	private Double discount;
 	private Integer status;
-	private Integer formOfPayment;
 	
 	private ClientDTO client;
 	private PlaceDTO place;
@@ -33,14 +32,13 @@ public class Reservation implements Serializable {
 	}
 
 	public Reservation(String id, Instant startDate, Instant endDate, Double price, ReservationStatus status,
-			FormOfPayment formOfPayment, ClientDTO client, PlaceDTO place) {
+			ClientDTO client, PlaceDTO place) {
 		super();
 		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.price = price;
 		setStatus(status);
-		setFormOfPayment(formOfPayment);
 		this.client = client;
 		this.place = place;
 	}
@@ -69,6 +67,14 @@ public class Reservation implements Serializable {
 		this.price = price;
 	}
 
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
+
 	public ReservationStatus getStatus() {
 		return ReservationStatus.valorDe(status);
 	}
@@ -76,16 +82,6 @@ public class Reservation implements Serializable {
 	public void setStatus(ReservationStatus status) {
 		if(status != null) {
 			this.status = status.getCode();
-		}
-	}
-
-	public FormOfPayment getFormOfPayment() {
-		return FormOfPayment.valorDe(formOfPayment);
-	}
-
-	public void setFormOfPayment(FormOfPayment formOfPayment) {
-		if(formOfPayment != null) {
-			this.formOfPayment = formOfPayment.getCode();
 		}
 	}
 
@@ -103,6 +99,10 @@ public class Reservation implements Serializable {
 
 	public ClientDTO getClient() {
 		return client;
+	}
+	
+	public Double getValorFinal() {
+		return price - discount;
 	}
 
 	public PaymentDTO getPayment() {
@@ -136,12 +136,5 @@ public class Reservation implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Reservation [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + ", price=" + price
-				+ ", status=" + status + ", formOfPayment=" + formOfPayment + ", client=" + client + ", place=" + place
-				+ ", payment=" + payment + "]";
 	}
 }

@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.places.placesRentals.documents.Reservation;
-import com.places.placesRentals.documents.enuns.FormOfPayment;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
 
 @Document
@@ -19,8 +18,8 @@ public class ReservationDTO implements Serializable {
 	private Instant startDate;
 	private Instant endDate;
 	private Double price;
+	private Double discount;
 	private Integer status;
-	private Integer formOfPayment;
 	
 	private PlaceDTO place;
 	
@@ -34,8 +33,8 @@ public class ReservationDTO implements Serializable {
 		startDate = reservation.getStartDate();
 		endDate = reservation.getEndDate();
 		price = reservation.getPrice();
+		price = reservation.getDiscount();
 		setStatus(reservation.getStatus());
-		setFormOfPayment(reservation.getFormOfPayment());
 		place = reservation.getPlace();
 	}
 
@@ -63,6 +62,14 @@ public class ReservationDTO implements Serializable {
 		this.price = price;
 	}
 
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
+
 	public ReservationStatus getStatus() {
 		return ReservationStatus.valorDe(status);
 	}
@@ -70,16 +77,6 @@ public class ReservationDTO implements Serializable {
 	public void setStatus(ReservationStatus status) {
 		if(status != null) {
 			this.status = status.getCode();
-		}
-	}
-
-	public FormOfPayment getFormOfPayment() {
-		return FormOfPayment.valorDe(formOfPayment);
-	}
-
-	public void setFormOfPayment(FormOfPayment formOfPayment) {
-		if(formOfPayment != null) {
-			this.formOfPayment = formOfPayment.getCode();
 		}
 	}
 

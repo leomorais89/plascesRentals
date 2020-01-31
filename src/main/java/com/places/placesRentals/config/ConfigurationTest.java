@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import com.places.placesRentals.documents.Place;
 import com.places.placesRentals.documents.Reservation;
 import com.places.placesRentals.documents.User;
-import com.places.placesRentals.documents.enuns.FormOfPayment;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
 import com.places.placesRentals.dto.ClientDTO;
 import com.places.placesRentals.dto.ImageDTO;
@@ -54,11 +53,12 @@ public class ConfigurationTest implements CommandLineRunner{
 		userRepository.saveAll(Arrays.asList(user1, user2, user3));
 		placeRepository.saveAll(Arrays.asList(place1, place2));
 		
-		Reservation reserv1 = new Reservation(null, Instant.parse("2020-02-08T08:38:00Z"), Instant.parse("2020-02-08T22:38:00Z"), null, null, FormOfPayment.BANK_SLIP, new ClientDTO(user1), new PlaceDTO(place1));
+		Reservation reserv1 = new Reservation(null, Instant.parse("2020-02-08T08:38:00Z"), Instant.parse("2020-02-08T22:38:00Z"), null, ReservationStatus.WAITING_PAYMENT, new ClientDTO(user1), new PlaceDTO(place1));
 		reserv1.setPrice(place1.getPrice());
-		reserv1.setStatus(ReservationStatus.WAITING_PAYMENT);
-		Reservation reserv2 = new Reservation(null, Instant.parse("2020-02-10T08:38:00Z"), Instant.parse("2019-12-14T22:38:00Z"), null, null, FormOfPayment.CARD,  new ClientDTO(user2), new PlaceDTO(place2));
+		reserv1.setDiscount(0.0);
+		Reservation reserv2 = new Reservation(null, Instant.parse("2020-02-10T08:38:00Z"), Instant.parse("2019-12-14T22:38:00Z"), null, ReservationStatus.WAITING_PAYMENT, new ClientDTO(user2), new PlaceDTO(place2));
 		reserv2.setPrice(place2.getPrice());
+		reserv2.setDiscount(0.0);
 		PaymentDTO payment1 = new PaymentDTO(Instant.parse("2020-02-06T10:38:00Z"));
 		reserv2.setPayment(payment1);
 		reserv2.setStatus(ReservationStatus.PAID);

@@ -1,23 +1,44 @@
 package com.places.placesRentals.dto;
 
 import java.io.Serializable;
-import java.time.Instant;
+
+import com.places.placesRentals.documents.Reservation;
+import com.places.placesRentals.documents.enuns.StatusPayment;
 
 public class PaymentDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Instant moment;
+	private String id;
+	private Integer status;
+	
+	private Reservation reservation;
 	
 	public PaymentDTO() {
 		
 	}
 
-	public PaymentDTO(Instant moment) {
+	public PaymentDTO(String id, StatusPayment status, Reservation reservation) {
 		super();
-		this.moment = moment;
+		this.id = id;
+		
+		this.reservation = reservation;
 	}
 
-	public Instant getMoment() {
-		return moment;
+	public String getId() {
+		return id;
+	}
+
+	public StatusPayment getStatus() {
+		return StatusPayment.valorDe(status);
+	}
+
+	public void setStatus(StatusPayment status) {
+		if(status != null) {
+			this.status = status.getCode();
+		}
+	}
+
+	public Reservation getReservation() {
+		return reservation;
 	}
 }
