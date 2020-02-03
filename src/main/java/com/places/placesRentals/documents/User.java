@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,7 +19,6 @@ public class User implements Serializable {
 	private String id;
 	private String name;
 	private Instant birthDate;
-	@CPF
 	private String cpf;
 	private String telephone;
 	private String cellphone;

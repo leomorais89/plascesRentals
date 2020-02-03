@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.places.placesRentals.documents.Reservation;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
-import com.places.placesRentals.dto.PaymentDTO;
 import com.places.placesRentals.repositories.ReservationRepository;
 import com.places.placesRentals.services.exceptions.ResourceBadRequestException;
 import com.places.placesRentals.services.exceptions.ResourceNotFoundException;
@@ -80,7 +79,7 @@ public class ReservationService {
 	
 	public void toPay(String id) {
 		Reservation reservation = findById(id);
-		reservation.setPayment(new PaymentDTO(Instant.now()));
+		//reservation.setPayment(new PaymentDTO(Instant.now()));
 		reservation.setStatus(ReservationStatus.PAID);
 		repo.save(reservation);
 	}

@@ -11,9 +11,11 @@ import com.places.placesRentals.documents.Place;
 import com.places.placesRentals.documents.Reservation;
 import com.places.placesRentals.documents.User;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
+import com.places.placesRentals.documents.enuns.StatusPayment;
+import com.places.placesRentals.dto.BankSlipPaymentDTO;
+import com.places.placesRentals.dto.CardPaymantDTO;
 import com.places.placesRentals.dto.ClientDTO;
 import com.places.placesRentals.dto.ImageDTO;
-import com.places.placesRentals.dto.PaymentDTO;
 import com.places.placesRentals.dto.PlaceDTO;
 import com.places.placesRentals.repositories.PlaceRepository;
 import com.places.placesRentals.repositories.ReservationRepository;
@@ -56,11 +58,11 @@ public class ConfigurationTest implements CommandLineRunner{
 		Reservation reserv1 = new Reservation(null, Instant.parse("2020-02-08T08:38:00Z"), Instant.parse("2020-02-08T22:38:00Z"), null, ReservationStatus.WAITING_PAYMENT, new ClientDTO(user1), new PlaceDTO(place1));
 		reserv1.setPrice(place1.getPrice());
 		reserv1.setDiscount(0.0);
+		reserv1.setPayment(new BankSlipPaymentDTO(StatusPayment.PENDING, Instant.parse("2020-02-08T08:38:00Z"), null));
 		Reservation reserv2 = new Reservation(null, Instant.parse("2020-02-10T08:38:00Z"), Instant.parse("2019-12-14T22:38:00Z"), null, ReservationStatus.WAITING_PAYMENT, new ClientDTO(user2), new PlaceDTO(place2));
 		reserv2.setPrice(place2.getPrice());
 		reserv2.setDiscount(0.0);
-		PaymentDTO payment1 = new PaymentDTO(Instant.parse("2020-02-06T10:38:00Z"));
-		reserv2.setPayment(payment1);
+		reserv2.setPayment(new CardPaymantDTO(StatusPayment.PAID, 3));
 		reserv2.setStatus(ReservationStatus.PAID);
 		
 		reservationRepository.saveAll(Arrays.asList(reserv1, reserv2));
