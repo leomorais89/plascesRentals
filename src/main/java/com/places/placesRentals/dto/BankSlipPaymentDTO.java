@@ -2,8 +2,10 @@ package com.places.placesRentals.dto;
 
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.places.placesRentals.documents.enuns.StatusPayment;
 
+@JsonTypeName("bankSlipPayment")
 public class BankSlipPaymentDTO extends PaymentDTO {
 	private static final long serialVersionUID = 1L;
 

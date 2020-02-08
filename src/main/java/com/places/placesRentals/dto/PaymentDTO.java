@@ -2,8 +2,10 @@ package com.places.placesRentals.dto;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.places.placesRentals.documents.enuns.StatusPayment;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public class PaymentDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 

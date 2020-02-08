@@ -1,6 +1,7 @@
 package com.places.placesRentals.services;
 
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.places.placesRentals.documents.Reservation;
 import com.places.placesRentals.documents.enuns.ReservationStatus;
+import com.places.placesRentals.documents.enuns.StatusPayment;
+import com.places.placesRentals.dto.BankSlipPaymentDTO;
 import com.places.placesRentals.repositories.ReservationRepository;
 import com.places.placesRentals.services.exceptions.ResourceBadRequestException;
 import com.places.placesRentals.services.exceptions.ResourceNotFoundException;
@@ -40,6 +43,11 @@ public class ReservationService {
 			reservation.setPrice(reservation.getPlace().getPrice());
 			reservation.setDiscount(0.0);
 			reservation.setStatus(ReservationStatus.WAITING_PAYMENT);
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.DATE, 7);
+			Instant vencimento = calendar.toInstant();
+			if(reservation.getPayment() instanceof BankSlipPaymentDTO)
+				reservation.setPayment(new BankSlipPaymentDTO(StatusPayment.PENDING, vencimento, null));
 			return repo.insert(reservation);
 		} else {
 			throw new ResourceBadRequestException("Não foi realizado a reserva, algum preenchimento dos campos de forma errada");
